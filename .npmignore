@@ -1,17 +1,47 @@
-src
-.husky
+# Source files
+src/
+.husky/
+
+# Build configs
 webpack.config.js
 webpack-pack.config.js
 jsconfig.json
+babel.config.js
+eslint.config.js
 .babelrc
 .lintstagedrc
-*.config.js
+
+# Git
+.git/
+.gitignore
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test and dev files
+*.test.js
+*.spec.js
+__tests__/
+coverage/
+
+# Build artifacts (except lib/)
+dist/
+dist-lib/
+build*/
 *.tgz
-docs
-dist-lib
-build*
+
+# Environment and secrets
 .env*
 *.pem
+
+# Other
 *.py
 wasm-*
-*.svg
+docs/
+
+# Include specific files
+!README.md
+!LICENSE

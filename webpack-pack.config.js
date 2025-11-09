@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require("webpack");
 
 module.exports = () => {
   return {
@@ -6,10 +7,11 @@ module.exports = () => {
     entry: path.join(__dirname, "src/index-pkg.js"),
     output: {
       path: path.resolve(__dirname, "lib"),
-      filename: "liberion-id-widget.js",
+      filename: "index.js",
       globalObject: "this",
       library: "LiberionIdWidget",
       libraryTarget: "umd",
+      clean: true,
     },
     resolve: {
       extensions: [".js", ".jsx", ".json"],
@@ -53,6 +55,18 @@ module.exports = () => {
         amd: "ReactDOM",
         root: "ReactDOM",
       },
+    },
+
+    plugins: [
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1,
+      }),
+    ],
+
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000,
     },
   };
 };
