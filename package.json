@@ -13,6 +13,7 @@
     "build": "webpack --mode production",
     "build:web": "webpack --mode production --env target=web",
     "build:lib": "webpack --mode production --env target=lib",
+    "build:pack": "webpack --mode production --config webpack-pack.config.js",
     "lint": "eslint ./src --ext .js,.jsx",
     "lint:fix": "eslint --fix ./src --ext .js,.jsx"
   },
