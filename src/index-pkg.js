@@ -1,0 +1,46 @@
+import { memo, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import Providers from "@/common/context/providers";
+import LibApp from "@/common/components/App/LibApp";
+import "@/common/i18n";
+
+const LiberionIdWidget = memo(function LiberionId({
+  isOpen = false,
+  backendUrl,
+  projectId,
+  successCb,
+  closeCb,
+  failedCb,
+  theme,
+}) {
+  const [mounted, setMounted] = useState(false);
+
+  const closeComponentHandler = () => {
+    setMounted(false);
+    closeCb && closeCb();
+  };
+
+  useEffect(() => {
+    setMounted(isOpen);
+  }, [isOpen]);
+
+  if (mounted) {
+    return createPortal(
+      <Providers>
+        <LibApp
+          backendUrl={backendUrl}
+          projectId={projectId}
+          successCb={successCb}
+          failedCb={failedCb}
+          closeCb={closeComponentHandler}
+          theme={theme}
+        />
+      </Providers>,
+      document.body
+    );
+  }
+
+  return null;
+});
+
+export { LiberionIdWidget };

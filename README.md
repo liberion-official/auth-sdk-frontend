@@ -2,56 +2,65 @@
 
 Liberion ID Widget is a modern authentication widget for web applications.
 
-## Installation
-
-Include the widget script in your HTML:
-
-```html
-<script src="https://example.com/lib/LiberionIdWidget.js"></script>
-```
-
-## Vanilla JavaScript Example
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Liberion ID - Vanilla JS</title>
-  </head>
-  <body>
-    <h1>Welcome!</h1>
-    <button onclick="handleLogin()">Login with Liberion ID</button>
-
-    <script src="https://example.com/lib/LiberionIdWidget.js"></script>
-    <script>
-      const handleLogin = () => {
-        LiberionIdWidget.setupLiberionId({
-          backendUrl: "wss://your-backend-url.example.com",
-          projectId: "your-project-id",
-          successCb: (token) => {
-            console.log("Authentication successful, token:", token);
-            localStorage.setItem("authToken", token);
-            window.location.href = "/dashboard";
-          },
-          failedCb: (error) => {
-            console.error("Authentication failed:", error);
-          },
-          closeCb: () => {
-            console.log("Widget closed");
-          },
-          theme: "light",
-        });
-      };
-    </script>
-  </body>
-</html>
-```
-
 ---
 
-## React Example
+## Installation as NPM Package
+
+Install the npm package:
+
+```bash
+npm i liberion-id-widget
+```
+
+### React Example with NPM Package
+
+**Props:**
+
+| Parameter    | Type       | Required | Description                                                        |
+| ------------ | ---------- | -------- | ------------------------------------------------------------------ |
+| `backendUrl` | `string`   | ✅       | WebSocket authentication server URL                                |
+| `projectId`  | `string`   | ✅       | Your unique project identifier                                     |
+| `isOpen`     | `boolean`  | ✅       | Controls widget visibility (true/false)                            |
+| `theme`      | `string`   | ❌       | Theme mode: `'light'` or `'dark'` (default: `'dark'`)              |
+| `successCb`  | `function` | ❌       | Callback function called on success. Receives authentication token |
+| `failedCb`   | `function` | ❌       | Callback function called on error.                                 |
+| `closeCb`    | `function` | ❌       | Callback function called when widget is closed                     |
+
+Import the widget into your React application:
+
+```jsx
+import { useState } from "react";
+import { LiberionIdWidget } from "liberion-id-widget";
+
+function App() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>Login with Liberion ID</button>
+
+      <LiberionIdWidget
+        backendUrl="wss://your-backend-url.example.com"
+        projectId="your-project-id"
+        isOpen={isOpen}
+        theme="light"
+        closeCb={() => setIsOpen(false)}
+        successCb={(token) => {
+          console.log("Authentication successful, token:", token);
+          localStorage.setItem("authToken", token);
+        }}
+        failedCb={(error) => {
+          console.error("Authentication failed:", error);
+        }}
+      />
+    </>
+  );
+}
+
+export default App;
+```
+
+### React Example with script tag
 
 ```jsx
 import React, { useState, useEffect } from "react";
@@ -129,52 +138,3 @@ const App = () => {
 
 export default App;
 ```
-
----
-
-## API Reference
-
-### `LiberionIdWidget.setupLiberionId(options)`
-
-Initializes and displays the authentication widget.
-
-**Parameters:**
-
-| Parameter    | Type       | Required | Description                                                        |
-| ------------ | ---------- | -------- | ------------------------------------------------------------------ |
-| `backendUrl` | `string`   | ✅       | WebSocket authentication server URL                                |
-| `projectId`  | `string`   | ✅       | Your unique project identifier                                     |
-| `theme`      | `string`   | ❌       | Theme mode: `'light'` or `'dark'`                                  |
-| `successCb`  | `function` | ❌       | Callback function called on success. Receives authentication token |
-| `failedCb`   | `function` | ❌       | Callback function called on error. Receives error object           |
-| `closeCb`    | `function` | ❌       | Callback function called when widget is closed                     |
-
-**Example:**
-
-```javascript
-LiberionIdWidget.setupLiberionId({
-  backendUrl: "wss://your-backend-url.example.com",
-  projectId: "your-project-id",
-  theme: "light",
-  successCb: (token) => {
-    localStorage.setItem("authToken", token);
-  },
-  failedCb: (error) => {
-    console.error("Error:", error);
-  },
-});
-```
-
-### `LiberionIdWidget.closeLiberionId()`
-
-Closes the widget.
-
-```javascript
-LiberionIdWidget.closeLiberionId();
-```
-
----
-
-## License
-
-MIT © Liberion Inc.
