@@ -4,7 +4,7 @@ import Providers from "@/common/context/providers";
 import LibApp from "@/common/components/App/LibApp";
 import "@/common/i18n";
 
-const LiberionIdWidget = memo(function LiberionId({
+const LiberionAuth = memo(function Widget({
   isOpen = false,
   backendUrl,
   projectId,
@@ -43,4 +43,4 @@ const LiberionIdWidget = memo(function LiberionId({
   return null;
 });
 
-export { LiberionIdWidget };
+export { LiberionAuth };

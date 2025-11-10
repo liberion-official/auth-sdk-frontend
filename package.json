@@ -1,12 +1,10 @@
 {
-  "name": "liberion-id-widget",
+  "name": "@liberion-auth/frontend",
   "version": "1.0.0",
-  "description": "Modern authentication widget for web applications powered by Liberion ID",
+  "description": "Liberion Auth Frontend",
   "main": "lib/index.js",
-  "module": "lib/index.js",
   "files": [
-    "lib",
-    "README.md"
+    "lib"
   ],
   "repository": {
     "type": "git",
@@ -20,8 +18,6 @@
   },
   "scripts": {
     "dev": "webpack serve --mode development --config webpack.config.js",
-    "build": "webpack --mode production",
-    "build:web": "webpack --mode production --env target=web",
     "build:lib": "webpack --mode production --env target=lib",
     "build:npm": "webpack --mode production --config webpack-pack.config.js",
     "lint": "eslint ./src --ext .js,.jsx",

@@ -1,6 +1,6 @@
-# Liberion ID Widget - Integration Guide
+# Liberion Auth - Integration Guide
 
-Liberion ID Widget is a modern authentication widget for web applications.
+Liberion Auth is a modern authentication widget for web applications.
 
 ---
 
@@ -9,7 +9,7 @@ Liberion ID Widget is a modern authentication widget for web applications.
 Install the npm package:
 
 ```bash
-npm i liberion-id-widget
+npm i @liberion-auth/frontend
 ```
 
 ### React Example with NPM Package
@@ -30,7 +30,7 @@ Import the widget into your React application:
 
 ```jsx
 import { useState } from "react";
-import { LiberionIdWidget } from "liberion-id-widget";
+import { LiberionAuth } from "@liberion-auth/frontend";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +39,7 @@ function App() {
     <>
       <button onClick={() => setIsOpen(true)}>Login with Liberion ID</button>
 
-      <LiberionIdWidget
+      <LiberionAuth
         backendUrl="wss://your-backend-url.example.com"
         projectId="your-project-id"
         isOpen={isOpen}
@@ -72,7 +72,7 @@ const App = () => {
   // Load widget script
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://example.com/lib/LiberionIdWidget.js";
+    script.src = "https://github.com/liberion-official/auth-sdk-frontend/build/index.js";
     script.async = true;
     script.onload = () => setIsWidgetLoaded(true);
     document.body.appendChild(script);
@@ -93,7 +93,7 @@ const App = () => {
   const handleLogin = () => {
     if (!isWidgetLoaded) return;
 
-    window.LiberionIdWidget.setupLiberionId({
+    window.LiberionAuth.open({
       backendUrl: "wss://your-backend-url.example.com",
       projectId: "your-project-id",
       successCb: (token) => {
