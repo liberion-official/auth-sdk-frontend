@@ -9,12 +9,12 @@ let root = null;
 let container = null;
 let externalCloseCb = null;
 
-export const closeLiberionId = () => {
+export const close = () => {
   if (root) {
     try {
       root.unmount();
     } catch (error) {
-      logError("[closeLiberionId] unmount failed", error);
+      logError("[close] unmount failed", error);
     }
     root = null;
   }
@@ -27,13 +27,13 @@ export const closeLiberionId = () => {
     try {
       externalCloseCb();
     } catch (error) {
-      logError("[closeLiberionId] external close callback failed", error);
+      logError("[close] external close callback failed", error);
     }
   }
   externalCloseCb = null;
 };
 
-export const setupLiberionId = ({
+export const open = ({
   backendUrl,
   projectId,
   successCb,
@@ -41,7 +41,7 @@ export const setupLiberionId = ({
   failedCb,
   theme,
 }) => {
-  if (container || root) closeLiberionId();
+  if (container || root) close();
 
   container = document.createElement("div");
   container.id = WIDGET_SCRIPT_ID;
@@ -50,7 +50,7 @@ export const setupLiberionId = ({
   root = createRoot(container);
   externalCloseCb = closeCb;
 
-  const teardown = () => closeLiberionId();
+  const teardown = () => close();
 
   root.render(
     <Providers>

@@ -8,7 +8,7 @@ import {
 } from "react";
 import { CALLBACKS, AUTH_STATUSES, SOCKET_MESSAGES } from "@/common/constants";
 import { log } from "@/common/utils";
-import { EnfaceSocket } from "@/common/socket";
+import { LiberionSocket } from "@/common/socket";
 import { useRootContext } from "./root";
 
 const AuthContext = createContext();
@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }) => {
 
   const initializeSocket = useCallback(
     async (url) => {
-      const socket = new EnfaceSocket({
+      const socket = new LiberionSocket({
         address: url,
         onClose: (event) => {
           log("WebSocket closed:", event);

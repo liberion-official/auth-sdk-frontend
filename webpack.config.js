@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const TerserPlugin = require("terser-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -45,6 +46,33 @@ const webConfig = (_env, argv) => {
       port: 3001,
     },
     devtool: isDev ? "cheap-module-source-map" : "source-map",
+    optimization: {
+      minimize: !isDev,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: !isDev,
+              drop_debugger: true,
+              pure_funcs: isDev
+                ? []
+                : ["console.info", "console.debug", "console.warn"],
+              passes: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            format: {
+              comments: false,
+            },
+          },
+          extractComments: false,
+          parallel: true,
+        }),
+      ],
+      usedExports: true,
+      sideEffects: false,
+    },
     plugins: [
       new CleanWebpackPlugin({
         cleanOnceBeforeBuildPatterns: ["**/*", "!lib/**"],
@@ -70,11 +98,11 @@ const libConfig = () => {
     target: "web",
     entry: path.join(__dirname, "src/index-lib.js"),
     output: {
-      path: path.resolve(__dirname, "dist/lib"),
-      filename: "LiberionIdWidget.js",
+      path: path.resolve(__dirname, "build"),
+      filename: "index.js",
       globalObject: "this",
       library: {
-        name: "LiberionIdWidget",
+        name: "LiberionAuth",
         type: "umd",
       },
       clean: true,
@@ -101,6 +129,31 @@ const libConfig = () => {
           use: ["@svgr/webpack"],
         },
       ],
+    },
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+              drop_debugger: true,
+              pure_funcs: ["console.info", "console.debug", "console.warn"],
+              passes: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            format: {
+              comments: false,
+            },
+          },
+          extractComments: false,
+          parallel: true,
+        }),
+      ],
+      usedExports: true,
+      sideEffects: false,
     },
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({

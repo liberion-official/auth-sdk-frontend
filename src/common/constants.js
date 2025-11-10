@@ -22,7 +22,7 @@ export const THEME_MODES = {
   DARK: "dark",
 };
 
-export const WIDGET_SCRIPT_ID = "liberion-id-widget-script-id";
+export const WIDGET_SCRIPT_ID = "liberion-auth-widget-script-id";
 
 export const DEBUG = false;
 

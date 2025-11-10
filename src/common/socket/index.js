@@ -1,7 +1,7 @@
 import { encode, decode } from "@msgpack/msgpack";
 import { log, logError } from "@/common/utils";
 
-export class EnfaceSocket {
+export class LiberionSocket {
   constructor({ address, onClose, onMessage }) {
     this.address = address;
     this.onClose = onClose;
@@ -38,7 +38,7 @@ export class EnfaceSocket {
             this.onMessage?.(reason);
           }
         } catch (error) {
-          logError("[EnfaceSocket] onclose reason parse failed", error);
+          logError("[Socket] onclose reason parse failed", error);
         }
 
         this.onClose?.(event);
@@ -52,7 +52,7 @@ export class EnfaceSocket {
 
         try {
           const json = this.decode(event.data);
-          log("[EnfaceSocket].onmessage", { json });
+          log("[Socket].onmessage", { json });
 
           if (json._ === "error") {
             if (rejector) {
@@ -69,7 +69,7 @@ export class EnfaceSocket {
             this.onMessage?.(json);
           }
         } catch (error) {
-          logError("[EnfaceSocket].onmessage", error);
+          logError("[Socket].onmessage", error);
           rejector?.(new Error("Bad server response"));
         }
       };
@@ -110,7 +110,7 @@ export class EnfaceSocket {
 
       this.rejector = (error) => {
         clearTimeout(timer);
-        log("[EnfaceSocket].rejector", error);
+        log("[Socket].rejector", error);
         this.resolver = null;
         this.rejector = null;
         reject(error);
