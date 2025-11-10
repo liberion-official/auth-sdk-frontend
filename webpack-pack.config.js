@@ -1,4 +1,5 @@
 const path = require("path");
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = () => {
   return {
@@ -6,9 +7,9 @@ module.exports = () => {
     entry: path.join(__dirname, "src/index-pkg.js"),
     output: {
       path: path.resolve(__dirname, "lib"),
-      filename: "liberion-id-widget.js",
+      filename: "liberion-auth.js",
       globalObject: "this",
-      library: "LiberionIdWidget",
+      library: "LiberionAuth",
       libraryTarget: "umd",
     },
     resolve: {
@@ -21,7 +22,6 @@ module.exports = () => {
     },
     module: {
       rules: [
-        // JS,JSX
         {
           test: /\.(js|jsx)$/,
           use: {
@@ -32,12 +32,37 @@ module.exports = () => {
           },
           exclude: /node_modules/,
         },
-        // SVG
         {
           test: /\.svg$/i,
           use: ["@svgr/webpack"],
         },
       ],
+    },
+
+    optimization: {
+      minimize: true,
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            compress: {
+              drop_console: true,
+              drop_debugger: true,
+              pure_funcs: ["console.info", "console.debug", "console.warn"],
+              passes: 2,
+            },
+            mangle: {
+              safari10: true,
+            },
+            format: {
+              comments: false,
+            },
+          },
+          extractComments: false,
+          parallel: true,
+        }),
+      ],
+      usedExports: true,
+      sideEffects: false,
     },
 
     externals: {
@@ -53,6 +78,10 @@ module.exports = () => {
         amd: "ReactDOM",
         root: "ReactDOM",
       },
+    },
+
+    performance: {
+      hints: false,
     },
   };
 };
